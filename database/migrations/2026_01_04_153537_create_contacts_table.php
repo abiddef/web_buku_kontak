@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->string('phone');
             $table->string('email')->nullable();
             $table->string('address');
-            $table->enum('gender', ['laki-laki', 'perempuan']);
             $table->timestamps();
         });
     }

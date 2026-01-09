@@ -11,10 +11,9 @@ class ContactController extends Controller
     {
         $query = Contact::where('user_id', auth('api')->id());
 
-        if ($request->gender) {
-            $query->where('gender', $request->gender);
-        }
-
+        // if ($request->name) {
+        //     $query->where('name', 'like', '%' . $request->name . '%');
+        // }
         if ($request->address) {
             $query->where('address', $request->address);
         }
@@ -29,7 +28,6 @@ class ContactController extends Controller
             'phone' => 'required',
             'email' => 'nullable|email',
             'address' => 'required',
-            'gender' => 'required|in:laki-laki,perempuan',
         ]);
 
         $data['user_id'] = auth('api')->id();
