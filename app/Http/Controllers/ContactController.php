@@ -11,6 +11,10 @@ class ContactController extends Controller
     {
         $query = Contact::where('user_id', auth('api')->id());
 
+        if ($request->name) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
         if ($request->address) {
             $query->where('address', $request->address);
         }
