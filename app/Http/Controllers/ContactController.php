@@ -9,26 +9,45 @@ class ContactController extends Controller
 {
     public function index(Request $request)
     {
-        return Contact::where('user_id', $request->user()->id)->get();
+        $query = Contact::where('user_id', auth('api')->id());
+
+        if ($request->gender) {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->address) {
+            $query->where('address', $request->address);
+        }
+
+        return response()->json($query->get());
     }
 
     public function store(Request $request)
     {
-        Contact::create([
-            'user_id' => $request->user()->id,
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'address' => $request->address,
+        $data = $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+            'email' => 'nullable|email',
+            'address' => 'required',
+            'gender' => 'required|in:laki-laki,perempuan',
         ]);
 
-        return response()->json(['message' => 'Kontak berhasil ditambahkan']);
+        $data['user_id'] = auth('api')->id();
+
+        return response()->json(Contact::create($data));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $contact = Contact::where('user_id', auth('api')->id())->findOrFail($id);
+        $contact->update($request->all());
+
+        return response()->json($contact);
     }
 
     public function destroy($id)
     {
-        Contact::findOrFail($id)->delete();
-        return response()->json(['message' => 'Kontak dihapus']);
+        Contact::where('user_id', auth('api')->id())->findOrFail($id)->delete();
+        return response()->json(['message' => 'Deleted']);
     }
 }
-
