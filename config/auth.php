@@ -8,10 +8,17 @@ return [
     ],
 
     'guards' => [
+
+        'web' => [ // WAJIB ADA (meskipun API)
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
+
     ],
 
     'providers' => [
@@ -20,4 +27,5 @@ return [
             'model' => App\Models\User::class,
         ],
     ],
+
 ];

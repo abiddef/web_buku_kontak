@@ -48,4 +48,39 @@ class ContactController extends Controller
         Contact::where('user_id', auth('api')->id())->findOrFail($id)->delete();
         return response()->json(['message' => 'Deleted']);
     }
+    public function show($id)
+{
+    $contact = Contact::where('user_id', auth('api')->id())
+        ->where('id', $id)
+        ->first();
+
+    if (! $contact) {
+        return response()->json([
+            'message' => 'Contact tidak ditemukan'
+        ], 404);
+    }
+
+    return response()->json([
+        'message' => 'Detail contact',
+        'data' => $contact
+    ]);
+}
+public function showByAddress($address)
+{
+    $contact = Contact::where('user_id', auth('api')->id())
+        ->where('address', $address)
+        ->first();
+
+    if (! $contact) {
+        return response()->json([
+            'message' => 'Contact dengan alamat tersebut tidak ditemukan'
+        ], 404);
+    }
+
+    return response()->json([
+        'message' => 'Detail contact berdasarkan alamat',
+        'data' => $contact
+    ]);
+}
+
 }

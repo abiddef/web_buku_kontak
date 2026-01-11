@@ -7,9 +7,15 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
 
-    protected $hidden = ['password'];
+    protected $hidden = [
+        'password',
+    ];
 
     public function getJWTIdentifier()
     {
@@ -19,10 +25,5 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function contacts()
-    {
-        return $this->hasMany(Contact::class);
     }
 }
